@@ -21,28 +21,30 @@ public class Main {
 
         UserService userService = new UserServiceImpl();
 
-        System.out.println("Создание таблицы");
+        //Создание таблицы
+
         userService.createUsersTable();
 
-        System.out.println("Добавляем пользователей");
+        //Добавляем пользователей
+
         userService.saveUser(user1.getName(), user1.getLastName(), user1.getAge());
         userService.saveUser(user2.getName(), user2.getLastName(), user2.getAge());
         userService.saveUser(user3.getName(), user3.getLastName(), user3.getAge());
         userService.saveUser(user4.getName(), user4.getLastName(), user4.getAge());
-        System.out.println();
 
-        System.out.println("-------------------");
-        System.out.println("Получаем всех пользователей");
+        //Получаем всех пользователей
+
         userService.getAllUsers();
 
-        System.out.println();
-        System.out.println("Очичаем таблицу");
+        //Очичаем таблицу
+
         userService.removeUserById(1);
         userService.removeUserById(2);
         userService.removeUserById(3);
         userService.removeUserById(4);
 
-        System.out.println("Удаляем таблицу");
+        // Удаляем таблицу
+
         userService.cleanUsersTable();
 
         userService.getAllUsers();

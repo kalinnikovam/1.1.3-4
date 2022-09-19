@@ -25,7 +25,6 @@ public class UserDaoJDBCImpl implements UserDao {
                 System.out.println(e);
                 System.out.println("Ошибка при соединении");
             }
-
             Statement statement = connection.createStatement();
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS users " +
                     "(id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
@@ -35,8 +34,6 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.executeUpdate("ALTER TABLE users " +
                     "CHANGE id " +
                     "id INT(1) NOT NULL AUTO_INCREMENT;");
-
-            System.out.println("Таблица создана успешно");
         } catch (SQLException e) {
             System.out.println("Ошибка при создании таблицы");
             throw new RuntimeException(e);
@@ -84,10 +81,14 @@ public class UserDaoJDBCImpl implements UserDao {
             } catch (SQLException e) {
                 System.out.println("Ошибка при соединении");
             }
-            Statement statement = connection.createStatement();
 
-            statement.executeUpdate("INSERT INTO users(name, lastname, age) " +
-                    "VALUES ('"+name+"' ,'"+lastName+"', "+age+")");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO users(name, lastname, age) " +
+                            "VALUES (?, ?, ?)");
+            ps.setString(1, name);
+            ps.setString(2, lastName);
+            ps.setInt(3, age);
+            ps.executeUpdate();
+
             System.out.printf("User с именем - %s добавлен в базу данных", name);
             System.out.println();
 
@@ -111,9 +112,10 @@ public class UserDaoJDBCImpl implements UserDao {
             } catch (SQLException e) {
                 System.out.println("Ошибка при соединении");
             }
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("DELETE FROM users " +
-                    "WHERE id = "+id+"");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM users " +
+                    "WHERE id = ?");
+            ps.setInt(1, (int) id);
+            ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Ошибка при удалении пользователя");
             throw new RuntimeException(e);
